@@ -5,17 +5,25 @@ import Collection from "./Page/Collection";
 import Home from "./Page/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProductDetail from "./Page/ProductDetail";
+import Login from "./Page/Login";
+import ProtectedRoutes from "./Utils/ProtectedRoutes";
+import Cart from "./Page/Cart";
 
 function App() {
   return (
     <>
       <Router>
         <Navbar />
+
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/productdetail/:id" element={<ProductDetail />}></Route>
-          <Route path="/collection" element={<Collection />}></Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/productdetail/:id" element={<ProductDetail />} />
+            <Route path="/collection" element={<Collection />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />
       </Router>

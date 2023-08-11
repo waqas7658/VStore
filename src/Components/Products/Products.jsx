@@ -3,6 +3,7 @@ import ProductCard from "./ProductCard/ProductCard";
 import axios from "axios";
 import { fetchProducts } from "../../Features/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
+
 // import { getProducts } from "../../Features/ProductSlice";
 
 const Products = () => {
