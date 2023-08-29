@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import login from "../assets/Images/login.jpg";
+import login from "../assets/Images/c3.jpg";
 import axios from "axios";
-import { Link, json, useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { BASEURL } from "../Utils/Base_URL";
-const Login = () => {
+
+const Signup = () => {
   const [email, setEmail] = useState("");
+  // const [role, setRole] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -14,16 +17,17 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${BASEURL}/api/user/login`, {
-        username: email,
-        role: "user",
+      const response = await axios.post(`${BASEURL}/api/user/signup`, {
+        username: userName,
+        email,
+        // role: "user",
         password,
       });
 
       if (response.status == 200) {
-        toast.success("Login Successfully");
-        localStorage.setItem("login", JSON.stringify(response.data.password));
-        navigate("/");
+        console.log("user registered", response);
+        toast.success("User Registered");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -42,7 +46,7 @@ const Login = () => {
           <div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
             <div className="w-full">
               <h1 className="text-xl md:text-2xl font-bold leading-tight mt-12">
-                Log in to your account
+                Register your account
               </h1>
 
               <form
@@ -51,6 +55,23 @@ const Login = () => {
                 method="POST"
                 onSubmit={handleSubmit}
               >
+                <div className="mt-4">
+                  <label htmlFor="userName" className="block text-gray-700">
+                    User Name
+                  </label>
+                  <input
+                    type="text"
+                    id="userName"
+                    name="userName"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="Enter User Name"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                    autoFocus
+                    autoComplete="userName"
+                    required
+                  />
+                </div>
                 <div className="mt-4">
                   <label htmlFor="email" className="block text-gray-700">
                     Email Address
@@ -68,7 +89,6 @@ const Login = () => {
                     required
                   />
                 </div>
-
                 <div className="mt-4">
                   <label htmlFor="password" className="block text-gray-700">
                     Password
@@ -85,51 +105,15 @@ const Login = () => {
                   />
                 </div>
 
-                <div className="text-right mt-2">
-                  <a
-                    href="#"
-                    className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
-
                 <button
                   type="submit"
                   className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg px-4 py-3 mt-6"
                 >
-                  Log In
+                  Signup
                 </button>
               </form>
 
               <hr className="my-6 border-gray-300 w-full" />
-
-              <button
-                type="button"
-                className="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300"
-              >
-                <div className="flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    className="w-6 h-6"
-                    viewBox="0 0 48 48"
-                  >
-                    {/* SVG Paths */}
-                  </svg>
-                  <span className="ml-4">Log in with Google</span>
-                </div>
-              </button>
-
-              <p className="mt-8">
-                Need an account?
-                <Link
-                  to="/signup"
-                  className="text-blue-500 hover:text-blue-700 font-semibold"
-                >
-                  Create an account
-                </Link>
-              </p>
             </div>
           </div>
         </section>
@@ -138,4 +122,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

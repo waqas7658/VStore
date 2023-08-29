@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../Utils/Base_URL";
 
 const initialState = {
   isLoading: false,
@@ -19,6 +20,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
+
         state.products = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -33,7 +35,8 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     try {
-      const response = await axios.get("https://fakestoreapi.com/products");
+      // const response = await axios.get("https://fakestoreapi.com/products");
+      const response = await axios.get(`${BASEURL}/api/products/allproducts`);
       return response.data;
     } catch (error) {
       console.error(error);

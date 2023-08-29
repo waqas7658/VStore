@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { BASEURL } from "../Utils/Base_URL";
 
 const Star = ({ filled }) => (
   <svg
@@ -18,6 +19,7 @@ const Star = ({ filled }) => (
 
 const ProductDetail = () => {
   const { id } = useParams();
+
   const [product, setProduct] = useState();
 
   const filledStars = Array.from({ length: product?.rating?.rate || 0 }).fill(
@@ -30,7 +32,7 @@ const ProductDetail = () => {
   const singleProduct = async () => {
     try {
       const response = await axios.get(
-        `https://fakestoreapi.com/products/${id}`
+        `${BASEURL}/api/products/singleproduct/${id}`
       );
       setProduct(response.data);
       console.log(response.data);
@@ -50,7 +52,7 @@ const ProductDetail = () => {
             <img
               alt="ecommerce"
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-              src={product?.image}
+              src={`${BASEURL}/${product?.image}`}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className=" text-xl title-font font-bold text-gray-500 tracking-widest">
@@ -135,10 +137,18 @@ const ProductDetail = () => {
 
               <p className="leading-relaxed">{product?.description}</p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5 gap-10">
-                <div className=" font-bold">Category : {product?.category}</div>
-                <div>
-                  {product?.rating.count > 0 ? "In Stock" : "Out of Stock"}
+                <div className="font-bold">
+                  Category:
+                  {product?.category.map((category, index) => (
+                    <span key={index}>
+                      {category.name}
+                      {index !== product.category.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
                 </div>
+                {/* <div>
+                  {product?.rating.count > 0 ? "In Stock" : "Out of Stock"}
+                </div> */}
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">

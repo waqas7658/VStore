@@ -42,9 +42,8 @@ const CollectionComp = () => {
       setSortedProducts(products); // Reset to original products if search is empty
     } else {
       const filteredProducts = products.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchText) ||
-          item.category.toLowerCase().includes(searchText)
+        (item) => item.title.toLowerCase().includes(searchText)
+        // item.category.toLowerCase().includes(searchText)
       );
 
       setSortedProducts(filteredProducts);
