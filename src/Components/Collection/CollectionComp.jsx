@@ -4,11 +4,14 @@ import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../Products/ProductCard/ProductCard";
 import { fetchProducts } from "../../Features/ProductSlice";
+import { BASEURL } from "../../Utils/Base_URL";
+import axios from "axios";
 
 const CollectionComp = () => {
   const [selectedSortOption, setSelectedSortOption] = useState("default");
   const [searchInput, setSearchInput] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]); // State for sorted and filtered products
+  const [category, setCategory] = useState([]);
 
   //dispatching and selecting data from store//
   const { products } = useSelector((state) => state.products);
@@ -54,6 +57,34 @@ const CollectionComp = () => {
     sortProducts();
   }, [selectedSortOption, products]);
 
+  /// fetching categories
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASEURL}/api/category/getCategory`);
+      console.log(response.data);
+      setCategory(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const handleCategory = async (id) => {
+    console.log(id);
+    try {
+      const response = await axios.get(
+        `${BASEURL}/api/products/filterproducts/${id}`
+      );
+      console.log("response", response);
+
+      setSortedProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="">
@@ -98,6 +129,20 @@ const CollectionComp = () => {
             </div>
             {/* // Categories // */}
             <span className=" font-bold text-[20px] my-2">Categories</span>
+          </div>
+          <div>
+            {category.map((item) => (
+              <label key={item._id} className="block">
+                <input
+                  type="checkbox"
+                  name="categories"
+                  value={item._id}
+                  onClick={() => handleCategory(item._id)}
+                  className="mr-2 h-5 w-5 text-black border-gray-300 rounded focus:ring-black-500x`"
+                />
+                <span className=" text-lg"> {item.name}</span>
+              </label>
+            ))}
           </div>
         </div>
         <div className="lg:col-span-3    bg-slate-100   shadow-lg ">

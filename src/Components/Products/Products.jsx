@@ -31,7 +31,7 @@ const Products = () => {
         <div className="flex justify-center items-center gap-2 lg:gap-5">
           <hr className="w-25" />
           <h1 className="lg:text-[3rem] md:text-2xl sm:text-3xl text-balance">
-            Daily Deals
+            Featured Products
           </h1>
           <hr className="w-25" />
         </div>
